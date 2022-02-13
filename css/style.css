@@ -35,6 +35,7 @@ header {
 }
 
 main {
+    width: 100%;
     margin: 75px 0px;
     padding-top: 26px;
 }
@@ -43,7 +44,7 @@ li {
     border-radius: 2px;
     min-height: 40px;
     width: 100%;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
     padding: 12px 9px;
     display: flex;
     align-items: center;
@@ -64,7 +65,7 @@ li strong {
     background: #DCDCDC;
 }
 
-.everyone {
+.public {
     background: #FFFFFF;
 }
 
@@ -100,3 +101,28 @@ input {
     font-size: 26px;
 }
 
+/* aside {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    width: 70%;
+    height: 100%;
+    background: #FFFFFF;
+    flex-direction: column;
+}
+
+.aside-title {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    flex-wrap: wrap;
+}
+
+aside h1{
+    padding: 0px 40px;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 19px;
+} */
