@@ -1,7 +1,7 @@
 let username;
 let chat = document.querySelector("ul")
-let refreshuser;
-let refreshmessages;
+let refreshuser = setInterval(SubmitUser,5000);
+let refreshmessages = setInterval(GetMessage, 2000);
 let to = "Todos";
 let type = "message";
 
@@ -13,7 +13,7 @@ function LogIn(){
     };
     const promise = axios.post("https://mock-api.driven.com.br/api/v4/uol/participants", username);
     promise.then(GetMessage);
-    promise.then(KeepOnline);
+    promise.then(refreshuser);
     promise.catch(UserNameChecker);
 }
 
@@ -33,10 +33,9 @@ function SubmitUser(){
     .catch(Disconnect);
 }
 
-function KeepOnline(){
-    refreshmessages = setInterval(SubmitUser,5000);
-    refreshuser = setInterval(GetMessage, 2000);
-}
+
+
+
 
 function MessageRender(message){
     chat.innerHTML = "";
@@ -115,7 +114,7 @@ function SendMessages(){
     const promise = axios.post('https://mock-api.driven.com.br/api/v4/uol/messages', message)
     promise.catch(Disconnect);
     promise.then(GetMessage);
-    promise.then(KeepOnline);
+    promise.then(refreshmessages);
     ClearInput()
 }
 
@@ -130,4 +129,12 @@ function Disconnect(){
     clearInterval(refreshmessages);
     window.location.reload(true);
 }
+
+document.addEventListener("keypress", function(Enter) {
+    if(Enter.key === 'Enter') {
+        let button = document.querySelector(".submit");
+    button.click();
+    }
+});
+
 LogIn()
