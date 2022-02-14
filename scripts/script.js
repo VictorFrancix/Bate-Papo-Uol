@@ -1,20 +1,24 @@
 let username;
 let chat = document.querySelector("ul")
-username = {
-    name: prompt("Qual o seu nome?")
-};
+let refreshuser;
+let refreshmessages;
+let to = "Todos";
+let type = "message";
+
+
 
 function LogIn(){
+    username = {
+        name: prompt("Qual o seu nome?")
+    };
     const promise = axios.post("https://mock-api.driven.com.br/api/v4/uol/participants", username);
     promise.then(GetMessage);
+    promise.then(KeepOnline);
     promise.catch(UserNameChecker);
 }
 
 function UserNameChecker(){
     alert("Esse nome já está sendo utilizado!");
-    username = {
-        name: prompt("Qual o seu nome?")
-    };
     LogIn();
 }
 
@@ -24,7 +28,15 @@ function GetMessage(){
 
 }
 
-function HandleError(error){}
+function SubmitUser(){
+    const online = axios.post("https://mock-api.driven.com.br/api/v4/uol/status", username)
+    .catch(Disconnect);
+}
+
+function KeepOnline(){
+    refreshmessages = setInterval(SubmitUser,5000);
+    refreshuser = setInterval(GetMessage, 2000);
+}
 
 function MessageRender(message){
     chat.innerHTML = "";
@@ -41,6 +53,9 @@ function MessageRender(message){
         }else{
             PrivateRender(arraymessages[i])
         }
+        
+        let lastmessage = document.querySelector("ul>li:last-child");
+        lastmessage.scrollIntoView();
     }
 }
 
@@ -71,17 +86,48 @@ function PublicRender(message){
 }
 
 function PrivateRender(message){
-    chat.innerHTML += `
-    <li class="private">
-        <span>
-            <time>(${message.time})  </time>
-            <strong>${message.from}</strong>
-            reservadamente para
-            <strong>${message.to}</strong>:
-            ${message.text}
-        </span>
-    </li>
-    `
+    if (message.to === username.name || message.from === username.name || message.to === 'Todos'){
+        chat.innerHTML += `
+        <li class="private">
+            <span>
+                <time>(${message.time})  </time>
+                <strong>${message.from}</strong>
+                reservadamente para
+                <strong>${message.to}</strong>:
+                ${message.text}
+            </span>
+        </li>
+        `
+    }
 }
 
+function SendMessages(){
+    const txt = document.querySelector('.text-box input').value;
+
+    if(txt !== ''){
+        message = {
+            from: username.name,
+            to: to,
+            text: txt,
+            type: type
+        }   
+    }
+    const promise = axios.post('https://mock-api.driven.com.br/api/v4/uol/messages', message)
+    promise.catch(Disconnect);
+    promise.then(GetMessage);
+    promise.then(KeepOnline);
+    ClearInput()
+}
+
+function ClearInput(){
+    let txt = document.querySelector('.text-box input');
+    txt.value = '';
+}
+
+function Disconnect(){
+    alert('Ops, essa não, você foi desconectado... :(');
+    clearInterval(refreshuser);
+    clearInterval(refreshmessages);
+    window.location.reload(true);
+}
 LogIn()

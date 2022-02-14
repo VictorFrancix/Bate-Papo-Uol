@@ -22,7 +22,7 @@ header {
     align-items: center;  
     justify-content: space-between; 
     background: #FFFFFF;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 
 .logo img {
@@ -40,6 +40,9 @@ main {
     padding-top: 26px;
 }
 
+section {
+    margin-bottom: 84px;
+}
 li {
     border-radius: 2px;
     min-height: 40px;
@@ -51,6 +54,11 @@ li {
     font-size: 14px;
     word-wrap: break-word;
     line-height: 18px;
+}
+
+span {
+    word-wrap: break-word;
+    width: 90vw;
 }
 
 time {
@@ -126,3 +134,4 @@ aside h1{
     font-size: 16px;
     line-height: 19px;
 } */
+
